@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fff7e6 0%, #ffe5b4 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: #fffdfa;
+            border-radius: 18px;
+            box-shadow: 0 6px 32px rgba(255, 140, 0, 0.08), 0 1.5px 8px rgba(255, 140, 0, 0.10);
+            padding: 36px 32px 28px 32px;
+            max-width: 380px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #ff8800;
+            margin-bottom: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        form label {
+            display: block;
+            margin-bottom: 6px;
+            color: #ff8800;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #ffe5b4;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            background: #fff7e6;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #ff8800;
+            outline: none;
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #ffb347 0%, #ff8800 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 140, 0, 0.08);
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #ff8800 0%, #ffb347 100%);
+        }
+        .error {
+            color: #d7263d;
+            background: #fff0e6;
+            border-left: 4px solid #ff8800;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            font-size: 0.97rem;
+        }
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #ff8800;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .register-link:hover {
+            color: #d2691e;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            {% for message in messages %}
+                <div class="error">{{ message }}</div>
+            {% endfor %}
+
+            <label>Mobile Number:</label>
+            <input type="text" name="mobile" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <a class="register-link" href="{% url 'register' %}">Don't have an account? Register here</a>
+    </div>
+</body>
+</html>
