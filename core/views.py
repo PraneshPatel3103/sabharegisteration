@@ -26,8 +26,7 @@ def register_view(request):
             pradesh = request.POST['pradesh']
             reference_sant = request.POST['reference_sant']
 
-            sabha_names = request.POST.getlist('sabha_names[]')
-            sabha_dates = request.POST.getlist('sabha_dates[]')
+            
 
             if password != re_password:
                 messages.error(request, "Passwords do not match")
@@ -43,14 +42,7 @@ def register_view(request):
                 reference_sant=reference_sant
             )
 
-            # Save event data if provided
-            for sabha_name, sabha_date in zip(sabha_names, sabha_dates):
-                if sabha_name and sabha_date:
-                    EventDetail.objects.create(
-                        user=user,
-                        sabha_name=sabha_name,
-                        sabha_date=sabha_date
-                    )
+            
 
             return redirect('login')
 
@@ -80,6 +72,10 @@ def login_view(request):
     return render(request, 'core/login.html')
 
 # User dashboard view with admin-managed content
+from django.shortcuts import render, redirect
+from .models import UserProfile, EventDetail, DashboardContent
+from django.utils import timezone
+
 def dashboard_view(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -92,8 +88,23 @@ def dashboard_view(request):
 
     dashboard_content = DashboardContent.objects.last()
 
+    if request.method == 'POST':
+        sabha_name = request.POST.get('sabha_name')
+        sabha_date = request.POST.get('sabha_date')
+
+        if sabha_name and sabha_date:
+            EventDetail.objects.create(
+                user=user,
+                sabha_name=sabha_name,
+                sabha_date=sabha_date
+            )
+            return redirect('dashboard')  # Refresh page to show updated list
+
+    user_sabhas = EventDetail.objects.filter(user=user).order_by('-sabha_date')
+
     return render(request, 'core/data_view.html', {
-        'dashboard': dashboard_content
+        'dashboard': dashboard_content,
+        'sabhas': user_sabhas  # ✅ Template expects 'sabhas'
     })
 
 # Admin approval

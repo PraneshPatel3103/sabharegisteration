@@ -386,20 +386,7 @@
         {% endfor %}
     </select>
 
-    <label>Event Registration :</label>
-
-    {% for i in "123" %}
-    <div class="event-row">
-        <select name="sabha_names[]">
-            <option value="">Select Sabha</option>
-            {% for option in sabha_options %}
-                <option value="{{ option.name }}">{{ option.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="date" name="sabha_dates[]">
-    </div>
-    {% endfor %}
-
+    
     <button type="submit">Register</button>
 </form>
 
